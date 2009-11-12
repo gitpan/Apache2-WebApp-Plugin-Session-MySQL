@@ -1,0 +1,4 @@
+Revision history for Perl module Apache2::WebApp::Plugin::Session::MySQL
+
+0.01 Thu Nov 11 21:17:28 2009
+    - original version; created by ExtUtils::ModuleMaker 0.51
