@@ -21,7 +21,7 @@ use Apache::Session::MySQL;
 use Apache::Session::Lock::MySQL;
 use Params::Validate qw( :all );
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~[  OBJECT METHODS  ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -100,7 +100,7 @@ sub get {
           { type => OBJECT },
           { type => HASHREF },
           { type => SCALAR },
-          { type => SCALAR }
+          { type => SCALAR, optional => 1 }
           );
 
     my $cookie = $c->plugin('Cookie')->get($name) || $id;

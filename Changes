@@ -2,3 +2,6 @@ Revision history for Perl module Apache2::WebApp::Plugin::Session::MySQL
 
 0.01 Thu Nov 11 21:17:28 2009
     - original version; created by ExtUtils::ModuleMaker 0.51
+
+0.02 Thu Nov 12 20:43:39 2009
+    - Fixed bug in get() method.  Added missing parameter (optional => 1)

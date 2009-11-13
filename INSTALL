@@ -18,7 +18,7 @@ Use of CPAN.pm in interactive mode:
   cpan> install Apache2::WebApp::Plugin::Session::MySQL
   cpan> quit
 
-Just like the manual installation of perl modules, the user may need root access
+Just like the manual installation of Perl modules, the user may need root access
 during this process to insure write permission is allowed within the intstallation
 directory.
 
