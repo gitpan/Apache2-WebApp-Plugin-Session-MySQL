@@ -21,7 +21,7 @@ use Apache::Session::MySQL;
 use Apache::Session::Lock::MySQL;
 use Params::Validate qw( :all );
 
-our $VERSION = 0.02;
+our $VERSION = 0.03;
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~[  OBJECT METHODS  ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -86,24 +86,29 @@ sub create {
 
     untie %session;
 
+    $c->plugin('Cookie')->set( $c, {
+        name    => $name,
+        value   => $id,
+        expires => '24h',
+      });
+
     return $id;
 }
 
 #----------------------------------------------------------------------------+
-# get( \%controller, $name, $id )
+# get( \%controller, $name )
 #
 # Return session data as a hash reference.
 
 sub get {
-    my ( $self, $c, $name, $id )
+    my ( $self, $c, $name )
       = validate_pos( @_,
-          { type => OBJECT },
+          { type => OBJECT  },
           { type => HASHREF },
-          { type => SCALAR },
-          { type => SCALAR, optional => 1 }
+          { type => SCALAR  }
           );
 
-    my $cookie = $c->plugin('Cookie')->get($name) || $id;
+    my $cookie = $c->plugin('Cookie')->get($name);
 
     my $session_id = ($cookie) ? $cookie : 'null';
 
@@ -177,7 +182,7 @@ sub update {
     my ( $self, $c, $name, $data_ref )
       = validate_pos( @_,
           { type => OBJECT  },
-          { type => HASHREF }
+          { type => HASHREF },
           { type => SCALAR  },
           { type => HASHREF }
           );
