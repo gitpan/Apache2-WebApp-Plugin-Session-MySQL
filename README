@@ -63,6 +63,7 @@ CONFIGURATION
 
       [session]
       storage_type = mysql
+      expires = 1h
 
 OBJECT METHODS
     Please refer to Apache2::WebApp::Session for method info.

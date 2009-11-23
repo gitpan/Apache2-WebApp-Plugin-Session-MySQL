@@ -21,7 +21,7 @@ use Apache::Session::MySQL;
 use Apache::Session::Lock::MySQL;
 use Params::Validate qw( :all );
 
-our $VERSION = 0.03;
+our $VERSION = 0.04;
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~[  OBJECT METHODS  ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -89,7 +89,7 @@ sub create {
     $c->plugin('Cookie')->set( $c, {
         name    => $name,
         value   => $id,
-        expires => '24h',
+        expires => $c->config->{session_expires} || '24h',
       });
 
     return $id;
@@ -300,6 +300,7 @@ Unless it already exists, add the following to your projects I<webapp.conf>
 
   [session]
   storage_type = mysql
+  expires = 1h
 
 =head1 OBJECT METHODS
 

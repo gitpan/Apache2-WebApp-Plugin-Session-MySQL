@@ -9,3 +9,6 @@ Revision history for Perl module Apache2::WebApp::Plugin::Session::MySQL
 0.03 Wed Nov 18 21:44:57 2009
     - Added set cookie method to the create() method.
     - Removed $id argument from get() method.
+
+0.04 Sun Nov 22 22:09:21 2009
+    - Added new configuration option for expiring sessions.
