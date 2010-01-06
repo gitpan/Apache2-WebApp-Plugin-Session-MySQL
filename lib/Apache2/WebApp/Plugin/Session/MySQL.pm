@@ -21,7 +21,7 @@ use Apache::Session::MySQL;
 use Apache::Session::Lock::MySQL;
 use Params::Validate qw( :all );
 
-our $VERSION = 0.07;
+our $VERSION = 0.08;
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~[  OBJECT METHODS  ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
