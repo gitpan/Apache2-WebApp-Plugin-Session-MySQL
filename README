@@ -10,7 +10,8 @@ SYNOPSIS
       $c->plugin('Session')->method( ... );
 
 DESCRIPTION
-    Store persistent data in a MySQL database.
+    Store persistent data in a MySQL database while maintaining a stateful
+    session using web browser cookies.
 
 PREREQUISITES
     This package is part of a larger distribution and was NOT intended to be
@@ -34,7 +35,7 @@ INSTALLATION
 
     Perl one liner using CPAN.pm:
 
-      perl -MCPAN -e 'install Apache2::WebApp::Plugin::Session::MySQL'
+      $ perl -MCPAN -e 'install Apache2::WebApp::Plugin::Session::MySQL'
 
     Use of CPAN.pm in interactive mode:
 

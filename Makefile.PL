@@ -26,7 +26,7 @@ WriteMakefile(
         'Apache2::WebApp'                  => 0.21,
         'Apache2::WebApp::Plugin::Cookie'  => 0.05,
         'Apache2::WebApp::Plugin::DBI'     => 0.04,
-        'Apache2::WebApp::Plugin::Session' => 0.07,
+        'Apache2::WebApp::Plugin::Session' => 0.10,
         'Params::Validate'                 => 0,
     },
     clean => {

@@ -3,7 +3,8 @@
 #  Apache2::WebApp::Plugin::Session::MySQL - Plugin providing session storage 
 #
 #  DESCRIPTION
-#  Store persistent data in a MySQL database.
+#  Store persistent data in a MySQL database while maintaining a stateful
+#  session using web browser cookies.
 #
 #  AUTHOR
 #  Marc S. Brooks <mbrooks@cpan.org>
@@ -21,7 +22,7 @@ use Apache::Session::MySQL;
 use Apache::Session::Lock::MySQL;
 use Params::Validate qw( :all );
 
-our $VERSION = 0.08;
+our $VERSION = 0.09;
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~[  OBJECT METHODS  ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -215,6 +216,22 @@ sub update {
     return;
 }
 
+#----------------------------------------------------------------------------+
+# id( \%controller, $name )
+#
+# Return the unique identifier for a given session.
+
+sub id {
+    my ( $self, $c, $name )
+      = validate_pos( @_,
+          { type => OBJECT  },
+          { type => HASHREF },
+          { type => SCALAR  }
+          );
+
+    return $c->plugin('Cookie')->get($name);
+}
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~[  PRIVATE METHODS  ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 #----------------------------------------------------------------------------+
@@ -245,7 +262,8 @@ Apache2::WebApp::Plugin::Session::MySQL - Plugin providing session storage
 
 =head1 DESCRIPTION
 
-Store persistent data in a MySQL database.
+Store persistent data in a MySQL database while maintaining a stateful session
+using web browser cookies.
 
 =head1 PREREQUISITES
 
@@ -271,7 +289,7 @@ From source:
 
 Perl one liner using CPAN.pm:
 
-  perl -MCPAN -e 'install Apache2::WebApp::Plugin::Session::MySQL'
+  $ perl -MCPAN -e 'install Apache2::WebApp::Plugin::Session::MySQL'
 
 Use of CPAN.pm in interactive mode:
 
