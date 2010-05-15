@@ -22,7 +22,7 @@ use Apache::Session::MySQL;
 use Apache::Session::Lock::MySQL;
 use Params::Validate qw( :all );
 
-our $VERSION = 0.10;
+our $VERSION = 0.11;
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~[  OBJECT METHODS  ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
@@ -51,7 +51,7 @@ sub create {
           );
 
     $self->error('Invalid session name')
-      unless ( $name =~ /^[\w]{20}$/ );
+      unless ( $name =~ /^[\w-]{0,20}$/ );
 
     my $dbh = $c->stash('DBH');     # use an existing connection
 
@@ -63,7 +63,7 @@ sub create {
                 a_session text
             )
           });
-    };
+      };
 
     if ($@) {
         $self->error( $c, 'Database CREATE failed', $dbh->errstr );
@@ -75,8 +75,8 @@ sub create {
         tie %session, 'Apache::Session::MySQL', undef, {
             Handle     => $dbh,
             LockHandle => $dbh,
-        };
-    };
+          };
+      };
 
     if ($@) {
         $self->error("Failed to create session: $@");
@@ -113,12 +113,12 @@ sub get {
           { type => SCALAR  }
           );
 
+    $self->error('Malformed session identifier')
+      unless ( $arg =~ /^[\w-]{1,32}$/ );
+
     my $cookie = $c->plugin('Cookie')->get($arg);
 
     my $id = ($cookie) ? $cookie : $arg;
-
-    $self->error('Malformed session identifier')
-      unless ( $id =~ /^[a-zA-Z]{32}$/ );
 
     my $dbh = $c->stash('DBH');     # use an existing connection
 
@@ -129,7 +129,7 @@ sub get {
             Handle     => $dbh,
             LockHandle => $dbh,
         };
-    };
+      };
 
     unless ($@) {
         my %values = %session;
@@ -156,14 +156,12 @@ sub delete {
           { type => SCALAR  }
           );
 
-    my $doc_root = $c->config->{apache_doc_root};
+    $self->error('Malformed session identifier')
+      unless ( $arg =~ /^[\w-]{1,32}$/ );
 
     my $cookie = $c->plugin('Cookie')->get($arg);
 
     my $id = ($cookie) ? $cookie : $arg;
-
-    $self->error('Malformed session identifier')
-      unless ( $id =~ /^[a-zA-Z]{32}$/ );
 
     my $dbh = $c->stash('DBH');     # use an existing connection
 
@@ -173,8 +171,8 @@ sub delete {
         tie %session, 'Apache::Session::MySQL', $id, {
             Handle     => $dbh,
             LockHandle => $dbh,
-        };
-    };
+          };
+      };
 
     unless ($@) {
         tied(%session)->delete;
@@ -200,14 +198,12 @@ sub update {
           { type => HASHREF }
           );
 
-    my $doc_root = $c->config->{apache_doc_root};
+    $self->error('Malformed session identifier')
+      unless ( $arg =~ /^[\w-]{1,32}$/ );
 
     my $cookie = $c->plugin('Cookie')->get($arg);
 
     my $id = ($cookie) ? $cookie : $arg;
-
-    $self->error('Malformed session identifier')
-      unless ( $id =~ /^[a-zA-Z]{32}$/ );
 
     my $dbh = $c->stash('DBH');     # use an existing connection
 
@@ -217,8 +213,8 @@ sub update {
         tie %session, 'Apache::Session::MySQL', $id, {
             Handle     => $dbh,
             LockHandle => $dbh,
-        };
-    };
+          };
+      };
 
     if ($@) {
         $self->error("Failed to create session: $@");
@@ -245,6 +241,9 @@ sub id {
           { type => HASHREF },
           { type => SCALAR  }
           );
+
+    $self->error('Malformed session identifier')
+      unless ( $name =~ /^[\w-]{1,32}$/ );
 
     return $c->plugin('Cookie')->get($name);
 }
@@ -301,7 +300,7 @@ From source:
   $ tar xfz Apache2-WebApp-Plugin-Session-MySQL-0.X.X.tar.gz
   $ perl MakeFile.PL PREFIX=~/path/to/custom/dir LIB=~/path/to/custom/lib
   $ make
-  $ make test     <--- Make sure you do this before contacting me
+  $ make test
   $ make install
 
 Perl one liner using CPAN.pm:
